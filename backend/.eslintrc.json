@@ -9,6 +9,9 @@
     "sourceType": "module"
   },
   "rules": {
-    "no-console": ["error", { "allow": ["warn", "error"] }]
+    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "no-restricted-syntax": "off",
+    "import/no-dynamic-require": "off",
+    "global-require": "off"
   }
 }
