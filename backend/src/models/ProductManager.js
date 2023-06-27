@@ -10,10 +10,7 @@ class ProductManager extends AbstractManager {
   }
 
   insert(product) {
-    return this.connection.query(
-      `insert into ${this.table} set ?`,
-      product
-    );
+    return this.connection.query(`insert into ${this.table} set ?`, product);
   }
 }
 
