@@ -19,6 +19,7 @@
     "husky": "^7.0.0"
   },
   "dependencies": {
-    "migrate": "^2.0.0"
+    "migrate": "^2.0.0",
+    "sweetalert2": "^11.7.12"
   }
 }
