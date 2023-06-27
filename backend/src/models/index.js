@@ -1,50 +1,49 @@
-const fs = require("fs");
+require("dotenv").config();
+
 const mysql = require("mysql2/promise");
+const fs = require("fs");
 const path = require("path");
 
-let mysqlConnectionFailed = true;
-const mysqlConnectionFailedMessage =
-  "Failed to connect with DB. If you need DB support, be sure to create .env from .env.sample file with valid DB parameters.";
+const { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME } = process.env;
 
-const load = (models) => {
-  const { DB_HOST, DB_USER, DB_PASSWORD, DB_NAME } = process.env;
+const pool = mysql.createPool({
+  host: DB_HOST,
+  port: DB_PORT,
+  user: DB_USER,
+  password: DB_PASSWORD,
+  database: DB_NAME,
+});
 
-  mysql
-    .createConnection({
-      host: DB_HOST,
-      user: DB_USER,
-      password: DB_PASSWORD,
-      database: DB_NAME,
-    })
-    .then((connection) => {
-      mysqlConnectionFailed = false;
-      fs.readdirSync(__dirname)
-        .filter((file) => file !== "AbstractManager.js" && file !== "index.js")
-        .forEach((file) => {
-          // eslint-disable-next-line global-require, import/no-dynamic-require
-          const Manager = require(path.join(__dirname, file));
-
-          // eslint-disable-next-line no-param-reassign
-          models[Manager.table] = new Manager(connection, Manager.table);
-        });
-    })
-    .catch(() => {
-      console.error("Warning:", mysqlConnectionFailedMessage);
-    });
-};
+pool.getConnection().catch(() => {
+  console.warn(
+    "Warning:",
+    "Failed to get a DB connection.",
+    "Did you create a .env file with valid credentials?",
+    "Routes using models won't work as intended"
+  );
+});
 
 const models = {};
 
-load(models);
+const ProductManager = require("./ProductManager");
+
+models.product = new ProductManager();
+models.product.setDatabase(pool);
+
+const files = fs
+  .readdirSync(__dirname)
+  .filter((file) => file !== "AbstractManager.js" && file !== "index.js");
+
+for (const file of files) {
+  const Manager = require(path.join(__dirname, file));
+  models[Manager.table] = new Manager();
+  models[Manager.table].setDatabase(pool);
+}
 
 const handler = {
   get(obj, prop) {
     if (prop in obj) {
       return obj[prop];
-    }
-
-    if (mysqlConnectionFailed) {
-      throw new Error(mysqlConnectionFailedMessage);
     }
 
     const pascalize = (string) =>
@@ -53,7 +52,7 @@ const handler = {
     throw new ReferenceError(
       `models.${prop} is not defined. Did you create ${pascalize(
         prop
-      )}Manager.js?`
+      )}Manager.js, and did you register it in backend/src/models/index.js?`
     );
   },
 };

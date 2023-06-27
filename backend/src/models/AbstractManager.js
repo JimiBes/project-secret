@@ -1,6 +1,9 @@
 class AbstractManager {
-  constructor(connection, table) {
-    this.connection = connection;
+  setDatabase(database) {
+    this.connection = database;
+  }
+
+  constructor({ table }) {
     this.table = table;
   }
 
