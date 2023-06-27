@@ -19,31 +19,31 @@ const getAllProducts = (req, res) => {
 const addProduct = (req, res) => {
   const product = req.body;
   models.product
-  .insert(product)
-  .then(([result]) => {
-    res.location(`/products/${result.insertId}`).sendStatus(201);
-  })
-  .catch((err) => {
-    console.error(err);
-    res.sendStatus(500);
-  });
-}
+    .insert(product)
+    .then(([result]) => {
+      res.location(`/products/${result.insertId}`).sendStatus(201);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
 
 const deleteProduct = (req, res) => {
-  const id = req.params.id;
+  const { id } = req.params;
   models.product
-  .delete(id)
-  .then(() => {
-    res.sendStatus(204);
-  })
-  .catch((err) => {
-    console.error(err);
-    res.sendStatus(500);
-  });
-}
+    .delete(id)
+    .then(() => {
+      res.sendStatus(204);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.sendStatus(500);
+    });
+};
 
 module.exports = {
   getAllProducts,
   addProduct,
-  deleteProduct
+  deleteProduct,
 };

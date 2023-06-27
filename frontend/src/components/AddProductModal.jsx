@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
-import axios from 'axios';
-import '../styles/AddProductModal.scss';
+import React, { useState, useRef } from "react";
+import axios from "axios";
+import "../styles/AddProductModal.scss";
 
 function AddProductModal({ onClose, onAddProduct }) {
   const [productName, setProductName] = useState("");
@@ -13,7 +13,7 @@ function AddProductModal({ onClose, onAddProduct }) {
     if (modalContent.current && !modalContent.current.contains(e.target)) {
       onClose();
     }
-  }
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -28,8 +28,6 @@ function AddProductModal({ onClose, onAddProduct }) {
       .post(`${import.meta.env.VITE_BACKEND_URL}/products`, product)
       .then((response) => {
         if (response.status === 201) {
-          console.log("Produit ajouté avec succès");
-          // Appel de la fonction passée en props pour ajouter le produit à la liste
           onAddProduct(product);
         }
       })
@@ -47,19 +45,38 @@ function AddProductModal({ onClose, onAddProduct }) {
         <form className="add-product-form" onSubmit={handleSubmit}>
           <label>
             Nom :
-            <input type="text" value={productName} onChange={(e) => setProductName(e.target.value)} required />
+            <input
+              type="text"
+              value={productName}
+              onChange={(e) => setProductName(e.target.value)}
+              required
+            />
           </label>
           <label>
             Référence :
-            <input type="text" value={productReference} onChange={(e) => setProductReference(e.target.value)} required />
+            <input
+              type="text"
+              value={productReference}
+              onChange={(e) => setProductReference(e.target.value)}
+              required
+            />
           </label>
           <label>
             Prix :
-            <input type="number" value={productPrice} onChange={(e) => setProductPrice(e.target.value)} required />
+            <input
+              type="number"
+              value={productPrice}
+              onChange={(e) => setProductPrice(e.target.value)}
+              required
+            />
           </label>
-          <button className="add-product-button" type="submit">Ajouter</button>
+          <button className="add-product-button" type="submit">
+            Ajouter
+          </button>
         </form>
-        <button className="close-button" onClick={onClose}>Fermer</button>
+        <button type="button" className="close-button" onClick={onClose}>
+          Fermer
+        </button>
       </div>
     </div>
   );

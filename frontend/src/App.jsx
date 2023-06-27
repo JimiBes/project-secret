@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import 'sweetalert2/src/sweetalert2.scss';
+import "sweetalert2/src/sweetalert2.scss";
 import "./App.css";
 import "./Reset.css";
 
