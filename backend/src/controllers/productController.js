@@ -16,6 +16,20 @@ const getAllProducts = (req, res) => {
     });
 };
 
+const addProduct = (req, res) => {
+  const product = req.body;
+  models.product
+  .insert(product)
+  .then(([result]) => {
+    res.location(`/products/${result.insertId}`).sendStatus(201);
+  })
+  .catch((err) => {
+    console.error(err);
+    res.sendStatus(500);
+  });
+}
+
 module.exports = {
   getAllProducts,
+  addProduct
 };
