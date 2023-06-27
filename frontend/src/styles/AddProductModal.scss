@@ -1,0 +1,69 @@
+.add-product-modal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    border: #242731 solid 1px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(10px);
+    z-index: 1000;  /* met la modale au-dessus des autres éléments */
+  }
+  
+  .add-product-modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;  /* 40% de la largeur de l'écran */
+    height: 40%;  /* 40% de la hauteur de l'écran */
+    padding: 20px;
+    background-color: #191b22;
+    box-shadow: #000000 0 0 1rem;
+    color: white;
+    border-radius: 10px;
+    overflow: auto;
+    h2 {
+        font-size: 1.5rem;
+    }
+    .add-product-form {
+      display: flex;
+      height: 70%;
+      flex-direction: column;
+      margin: 2rem;
+      justify-content: space-between;
+      input {
+        margin: 0.5rem;
+        border-radius: 10px;
+        height: 2rem;
+        background-color: #95979c;
+      }
+
+    }
+    .add-product-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 2rem;
+      width: 30%;
+      background-color: #0000007a;
+      color: white;
+      border: black solid 1px;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+    }
+    .close-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 2rem;
+            width: 30%;
+            background-color: #0000007a;
+            color: white;
+            border: black solid 1px;
+            border-radius: 10px;
+    }
+  }
+  

@@ -8,6 +8,13 @@ class ProductManager extends AbstractManager {
   constructor() {
     super({ table: "product" });
   }
+
+  insert(product) {
+    return this.connection.query(
+      `insert into ${this.table} set ?`,
+      product
+    );
+  }
 }
 
 module.exports = ProductManager;

@@ -3,12 +3,18 @@ import axios from "axios";
 import "../styles/ProductModal.scss";
 import banniere from "../assets/banniere.jpg";
 import Footer from "./Footer";
+import AddProductModal from "./AddProductModal";
 
 function ProductModal() {
   const [products, setProducts] = useState([]);
   const [searchValue, setSearchValue] = useState("");
+  const [isAddProductModalOpen, setIsAddProductModalOpen] = useState(false);
 
   useEffect(() => {
+    loadProducts();
+  }, []);
+
+  const loadProducts = () => {
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/products`)
       .then((response) => {
@@ -19,7 +25,20 @@ function ProductModal() {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  }
+
+  const openAddProductModal = () => {
+    setIsAddProductModalOpen(true);
+  };
+
+  const closeAddProductModal = () => {
+    setIsAddProductModalOpen(false);
+  };
+
+  const addProduct = (product) => {
+    setProducts((prevProducts) => [...prevProducts, product]);
+    loadProducts(); // reload products from server
+  };
 
   return (
     <div className="modal-container">
@@ -55,21 +74,23 @@ function ProductModal() {
                   <tr key={product.id}>
                     <td>{product.name}</td>
                     <td>{product.reference}</td>
-                    <td>{product.price}</td>
+                    <td>{product.price} €</td>
                   </tr>
                 ))}
             </tbody>
           </table>
         </div>
         <div className="product-list-footer">
-          <button type="button" className="add-product">
+          <button type="button" className="add-product" onClick={openAddProductModal}>
             <p>Nouveau produit</p>
           </button>
         </div>
       </div>
       <Footer />
+      {isAddProductModalOpen && <AddProductModal onClose={closeAddProductModal} onAddProduct={addProduct} />}
     </div>
   );
 }
 
 export default ProductModal;
+
